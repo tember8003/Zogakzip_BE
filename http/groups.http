@@ -1,0 +1,348 @@
+//----------------------------------그룹 데이터 입력용----------------------------------
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "hong",
+	"password": "1234",
+	"imageUrl": "https://i.pinimg.com/736x/3b/e3/3d/3be33d221429fb01d3bbbf6779f4e141.jpg",
+	"isPublic": true,
+	"introduction": "fighting"
+}
+
+###
+
+GET http://localhost:3000/api/groups
+Content-Type: application/json
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "jason",
+	"password": "jtest",
+	"imageUrl": "https://i.pinimg.com/736x/3b/e3/3d/3be33d221429fb01d3bbbf6779f4e141.jpg",
+	"isPublic": true,
+	"introduction": "jason good"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "testnum",
+	"password": "jtestnum",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": true,
+	"introduction": "test good?"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "testnumber",
+	"password": "number1",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": true,
+	"introduction": "test good!"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "helloworld",
+	"password": "fromyuchan",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": true,
+	"introduction": "test not good..."
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "creategroup",
+	"password": "groupgroup",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": true,
+	"introduction": "groupgroup"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "gil",
+	"password": "dong",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": false,
+	"introduction": "hong gil dong"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "hellotest",
+	"password": "testworld",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": false,
+	"introduction": "testcase1"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "testnum33",
+	"password": "jtestnum12",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": false,
+	"introduction": "test good12"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "testnum2",
+	"password": "jtestnum22",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": true,
+	"introduction": "test good22"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "forthetest",
+	"password": "for",
+	"imageUrl": "https://cdn.pixabay.com/photo/2024/02/10/11/17/link-8564589_1280.png",
+	"isPublic": true,
+	"introduction": "test-"
+}
+
+###
+
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "eminem",
+	"password": "marshalll",
+	"imageUrl": "https://i.pinimg.com/736x/3b/e3/3d/3be33d221429fb01d3bbbf6779f4e141.jpg",
+	"isPublic": true,
+	"introduction": "brabbit"
+}
+
+###
+
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"name": "houdini",
+	"password": "shady",
+	"imageUrl": "www.eminem.com",
+	"isPublic": true,
+	"introduction": "dre"
+}
+
+###
+
+//이름이 없는 경우 - 에러
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+	"password": "1234",
+	"imageUrl": "https://i.pinimg.com/736x/3b/e3/3d/3be33d221429fb01d3bbbf6779f4e141.jpg",
+	"isPublic": true,
+	"introduction": "fighting"
+}
+
+//----------------------------------그룹 데이터 입력용 끝----------------------------------
+
+//----------------------------------그룹 목록 조회용----------------------------------
+
+###
+//정렬 기준 - 최근순 / 그룹 공개 / 현재 페이지 번호 = 1 / 페이지당 그룹 수 = 3 / 키워드 = ho
+GET http://localhost:3000/api/groups?page=1&pageSize=3&sortBy=latest&isPublic=true&keyword=ho
+Content-Type: application/json
+
+###
+//정렬 기준 - 그룹 공감 많은 순 / 그룹 공개 / 현재 페이지 번호 = 1 / 페이지당 그룹 수 = 3
+GET http://localhost:3000/api/groups?page=1&pageSize=3&isPublic=true&sortBy=mostLiked
+Content-Type: application/json
+
+###
+//정렬 기준 - 최근순 / 그룹 비공개 / 현재 페이지 번호 = 1 / 페이지당 그룹 수 = 4
+GET http://localhost:3000/api/groups?page=1&pageSize=4&isPublic=false&sortBy=latest
+Content-Type: application/json
+
+###
+//키워드 = o
+GET http://localhost:3000/api/groups?keyword=o
+Content-Type: application/json
+
+###
+//정렬 기준 - 포스트 많은 순서 / 그룹 비공개
+GET http://localhost:3000/api/groups?sortBy=mostPosted&isPublic=false
+Content-Type: application/json
+
+//----------------------------------그룹 목록 조회용 끝----------------------------------
+###
+
+//id와 비밀번호를 통해 그룹 수정
+PUT http://localhost:3000/api/groups/10
+Content-Type: application/json
+
+{
+	"name": "jason_mark2",
+	"password": "jtest",
+	"imageUrl": "https://image.genie.co.kr/Y/IMAGE/IMG_MUZICAT/IV2/Genie_Magazine/7795/Mgz_Main_Top_20191213113016.jpg/dims/resize/Q_80,0",
+	"isPublic": false,
+	"introduction": "im jason"
+}
+
+###
+
+//id와 비밀번호를 통해 그룹 수정 - 이름만 변경하기
+PUT http://localhost:3000/api/groups/10
+Content-Type: application/json
+
+{
+	"name": "jason_mark2",
+	"password": "jtest"
+}
+
+###
+
+//id와 비밀번호를 통해 일부 그룹 정보 수정
+PUT http://localhost:3000/api/groups/9
+Content-Type: application/json
+
+{
+	"name" : "hong1234",
+	"password": "1234",
+	"isPublic": false
+}
+
+###
+//그룹 삭제하기
+DELETE http://localhost:3000/api/groups/19
+Content-Type: application/json
+
+{
+	"password":"for"
+}
+
+###
+
+//id로 그룹 상세 조회
+GET http://localhost:3000/api/groups/15
+Content-Type: application/json
+
+###
+
+//그룹 조회 권한 확인 - 실패
+POST http://localhost:3000/api/groups/10/verify-password
+Content-Type: application/json
+
+{
+	"password":""
+}
+
+###
+//그룹 조회 권한 확인 - 실패(비밀번호 틀림)
+POST http://localhost:3000/api/groups/10/verify-password
+Content-Type: application/json
+
+{
+	"password":"233"
+}
+
+###
+
+//그룹 조회 권한 확인 - 성공
+POST http://localhost:3000/api/groups/10/verify-password
+Content-Type: application/json
+
+{
+	"password":"jtest"
+}
+
+###
+
+//그룹 조회 권한 확인 - 공개 그룹
+POST http://localhost:3000/api/groups/18/verify-password
+Content-Type: application/json
+
+{
+	"password":"jtestnum22"
+}
+
+
+###
+
+//그룹 조회 권한 확인 - 실패
+POST http://localhost:3000/api/groups/2/verify-password
+Content-Type: application/json
+
+{
+	"password":"33332"
+}
+
+###
+
+//그룹 공감 누르기 - 실패
+POST http://localhost:3000/api/groups/7/like
+Content-Type: application/json
+
+###
+
+//그룹 공감 누르기 - 성공
+POST http://localhost:3000/api/groups/13/like
+Content-Type: application/json
+
+###
+//그룹 공감 누르기 - 성공 2트
+POST http://localhost:3000/api/groups/9/like
+Content-Type: application/json
+
+###
+
+//그룹 공개 / 비공개 여부 확인
+GET http://localhost:3000/api/groups/13/is-public
+Content-Type: application/json
+
+###
+
+//그룹 공개 / 비공개 여부 확인
+GET http://localhost:3000/api/groups/10/is-public
+Content-Type: application/json
