@@ -23,5 +23,13 @@ model Group {
   postCount    Int      @default(0)
   introduction String?
   createdAt    DateTime @default(now())
-  //batge Batge[] //나중에 빠질 수도 있음.
+  Badge        Badge[]
+}
+
+model Badge {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String? //배지 설명 -> 빠질 수도 있음.
+  group       Group   @relation(fields: [groupId], references: [id])
+  groupId     Int
 }

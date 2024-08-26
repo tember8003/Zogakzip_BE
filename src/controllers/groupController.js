@@ -1,5 +1,6 @@
 import express from 'express';
 import groupService from '../services/groupService.js';
+import badgeRepository from '../repositories/badgeRepository.js';
 
 const groupController = express.Router();
 
@@ -97,7 +98,11 @@ groupController.get('/:id', async (req, res, next) => { //그룹 상세 정보 �
     try {
         const groupId = parseInt(req.params.id, 10);
         const group = await groupService.getDetail(groupId);
-        return res.status(200).json(group);
+
+        //배지 가져오기
+        const badges = await badgeRepository.getBadges(groupId);
+
+        return res.status(200).json({ group, badges });
     } catch (error) {
         if (error.code === 404) {
             res.status(404).json({ message: "존재하지 않습니다." });

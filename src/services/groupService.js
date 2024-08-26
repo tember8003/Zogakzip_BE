@@ -1,4 +1,5 @@
 import groupRepository from "../repositories/groupRepository.js";
+import badgeRepository from "../repositories/badgeRepository.js";
 import bcrypt from 'bcrypt';
 
 //그룹 생성하기
@@ -121,6 +122,9 @@ async function getDetail(groupId) {
         error.data = { id: groupId };
         throw error;
     }
+
+    await grantBadge(groupId);
+
     return await groupRepository.getDetail(existedGroup);;
 }
 
@@ -152,16 +156,27 @@ async function verifyPassword(groupId, password) {
 
 //그룹 공감 누르기
 async function pushLike(groupId) {
-    const group = await groupRepository.findById(groupId);
+    const existedGroup = await groupRepository.findById(groupId);
 
-    if (!group) {
+    if (!existedGroup) {
         const error = new Error('존재하지 않습니다.');
         error.code = 404;
         error.data = { id: groupId };
         throw error;
     }
 
-    return await groupRepository.pushLike(group);
+    //그룹 공감 1만 개 이상이면 배지 주기
+    const likeCount = checkLike(existedGroup);
+    if (likeCount) {
+        const name = "그룹 공감 1만개 이상";
+        const existedBadge = await badgeRepository.findByName(name, groupId);
+
+        if (!existedBadge) {
+            await badgeRepository.save({ name: name, groupId: groupId });
+        }
+    }
+
+    return await groupRepository.pushLike(existedGroup);
 }
 
 //그룹 공개 여부 확인용
@@ -176,6 +191,68 @@ async function getPublic(groupId) {
     }
 
     return group;
+}
+
+//배지 수여하기
+async function grantBadge(groupId) {
+    const existedGroup = await groupRepository.findById(groupId);
+
+    if (!existedGroup) {
+        const error = new Error('존재하지 않습니다.');
+        error.code = 404;
+        error.data = { id: groupId };
+        throw error;
+    }
+
+    //그룹 생성 후 1년 배지
+    const oneYearLater = checkYear(existedGroup);
+    if (oneYearLater) {
+        const name = "그룹 생성 후 1년 달성";
+        const existedBadge = await badgeRepository.findByName(name, groupId);
+
+        if (!existedBadge) {
+            await badgeRepository.save({ name: name, groupId: groupId });
+        }
+    }
+
+    //그룹 공감 1만 개 이상
+    const likeCount = checkLike(existedGroup);
+    if (likeCount) {
+        const name = "그룹 공감 1만개 이상";
+        const existedBadge = await badgeRepository.findByName(name, groupId);
+
+        if (!existedBadge) {
+            await badgeRepository.save({ name: name, groupId: groupId });
+        }
+    }
+}
+
+function checkLike(group) {
+    const likeCount = group.likeCount;
+    if (likeCount >= 10000) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function checkYear(group) {
+    const currentDate = new Date();
+    const createdAt = group.createdAt;
+
+    const oneYear = new Date(createdAt);
+
+    //생성 날짜로부터 1년 추가
+    oneYear.setFullYear(oneYear.getFullYear() + 1);
+
+    //만약 1년 추가한 후 현재 날짜가 생성 날짜보다 크다면 1년보다 크므로 true
+    if (currentDate >= oneYear) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 export default {

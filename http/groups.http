@@ -270,6 +270,12 @@ Content-Type: application/json
 
 ###
 
+//id로 그룹 상세 조회
+GET http://localhost:3000/api/groups/13
+Content-Type: application/json
+
+###
+
 //그룹 조회 권한 확인 - 실패
 POST http://localhost:3000/api/groups/10/verify-password
 Content-Type: application/json
