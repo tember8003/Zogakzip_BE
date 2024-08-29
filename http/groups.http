@@ -265,13 +265,19 @@ Content-Type: application/json
 ###
 
 //id로 그룹 상세 조회
-GET http://localhost:3000/api/groups/15
+GET http://localhost:3000/api/groups/5
 Content-Type: application/json
 
 ###
 
 //id로 그룹 상세 조회
-GET http://localhost:3000/api/groups/13
+GET http://localhost:3000/api/groups/6
+Content-Type: application/json
+
+###
+
+//id로 그룹 상세 조회
+GET http://localhost:3000/api/groups/9
 Content-Type: application/json
 
 ###
@@ -327,13 +333,19 @@ Content-Type: application/json
 ###
 
 //그룹 공감 누르기 - 실패
-POST http://localhost:3000/api/groups/7/like
+POST http://localhost:3000/api/groups/99/like
 Content-Type: application/json
 
 ###
 
 //그룹 공감 누르기 - 성공
-POST http://localhost:3000/api/groups/13/like
+POST http://localhost:3000/api/groups/5/like
+Content-Type: application/json
+
+###
+
+//그룹 공감 누르기 - 성공 2번째 테스트
+POST http://localhost:3000/api/groups/6/like
 Content-Type: application/json
 
 ###

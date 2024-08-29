@@ -99,10 +99,10 @@ groupController.get('/:id', async (req, res, next) => { //그룹 상세 정보 �
         const groupId = parseInt(req.params.id, 10);
         const group = await groupService.getDetail(groupId);
 
-        //배지 가져오기
-        const badges = await badgeRepository.getBadges(groupId);
+        //배지 목록 업데이트하기
+        await badgeRepository.getBadges(groupId);
 
-        return res.status(200).json({ group, badges });
+        return res.status(200).json(group);
     } catch (error) {
         if (error.code === 404) {
             res.status(404).json({ message: "존재하지 않습니다." });

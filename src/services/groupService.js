@@ -112,6 +112,7 @@ async function getList(name, page, pageSize, sortBy, publicCheck) {
     return { currentPage: page, totalPages: totalPages, totalItemCount: totalCount, data: groups };
 }
 
+
 //그룹 상세 정보 조회
 async function getDetail(groupId) {
     const existedGroup = await groupRepository.findById(groupId);
@@ -225,7 +226,9 @@ async function grantBadge(groupId) {
             await badgeRepository.save({ name: name, groupId: groupId });
         }
     }
+    await groupRepository.updateBadgeCount(groupId);
 }
+
 
 function checkLike(group) {
     const likeCount = group.likeCount;

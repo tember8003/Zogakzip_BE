@@ -21,6 +21,7 @@ model Group {
   imageUrl     String?
   likeCount    Int      @default(0)
   postCount    Int      @default(0)
+  badgeCount   Int      @default(0)
   introduction String?
   createdAt    DateTime @default(now())
   Badge        Badge[]
@@ -28,8 +29,11 @@ model Group {
 
 model Badge {
   id          Int     @id @default(autoincrement())
-  name        String  @unique
+  name        String
   description String? //배지 설명 -> 빠질 수도 있음.
   group       Group   @relation(fields: [groupId], references: [id])
   groupId     Int
+
+  // name과 groupId의 조합을 유니크로 설정 -> badge 등록 중 error가 발생하는 문제 해결용
+  @@unique([name, groupId])
 }
