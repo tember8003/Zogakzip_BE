@@ -1,4 +1,3 @@
-import { get } from "mongoose";
 import prisma from "../config/prisma.js";
 import bcrypt from 'bcrypt';
 
@@ -32,6 +31,13 @@ async function getDetail(group) {
             isPublic: true,
             likeCount: true,
             postCount: true,
+            Badge: {
+                select: {
+                    //공개 범위 id 제외용
+                    name: true,
+                    description: true,
+                }
+            },
             createdAt: true,
             password: false, // password 필드 제외
             introduction: true,
@@ -80,6 +86,7 @@ async function save(group) {
             imageUrl: group.imageUrl,
             likeCount: 0,
             postCount: 0,
+            badgeCount: 0,
             introduction: group.introduction,
         },
     });
@@ -104,6 +111,7 @@ async function getGroups(pageSkip, pageTake, orderBy, name, publicCheck) {
             isPublic: true,
             likeCount: true,
             postCount: true,
+            badgeCount: true,
             createdAt: true,
             password: false, // password 필드 제외
             introduction: true,
@@ -147,6 +155,26 @@ async function pushLike(group) {
     return likeGroup;
 }
 
+async function updateBadgeCount(groupId) {
+    const findCount = await prisma.badge.count({
+        where: {
+            groupId: groupId
+        },
+    });
+
+    const updateCount = await prisma.group.update({
+        where: {
+            id: groupId
+        },
+        data: {
+            badgeCount: findCount,
+        },
+    });
+
+    return updateCount;
+}
+
+
 //공개 그룹인 그룹 가져오기
 async function getPublic(groupId) {
     const foundGroup = await prisma.group.findUnique({
@@ -162,7 +190,6 @@ async function getPublic(groupId) {
 }
 
 
-
 export default {
     findByName,
     save,
@@ -175,4 +202,5 @@ export default {
     checkPassword,
     pushLike,
     getPublic,
+    updateBadgeCount,
 }

@@ -1,7 +1,7 @@
-import { get } from "mongoose";
+
 import prisma from "../config/prisma.js";
 
-//배지 생성하기
+// 배지 생성하기
 async function save(badge) {
     return prisma.badge.create({
         data: {
