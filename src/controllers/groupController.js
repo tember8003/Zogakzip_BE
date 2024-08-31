@@ -4,18 +4,24 @@ import badgeRepository from '../repositories/badgeRepository.js';
 
 const groupController = express.Router();
 
-export default groupController;
 
 groupController.post('/', async (req, res, next) => {//그룹 등록
     try {
-        const name = req.body.name;
-        const password = req.body.password;
+        const { name, password, isPublic, introduction, imageUrl } = req.body;
 
         if (!name || !password) {
-            return res.status(404).json({ message: '잘못된 요청입니다.' });
+            return res.status(404).json({ message: '잘못된 요청입니다. - 이름과 비밀번호는 필수사항입니다.' });
         }
 
-        const group = await groupService.createGroup(req.body);
+        const groupData = {
+            name,
+            password,
+            isPublic: Boolean(isPublic),
+            introduction,
+            imageUrl,
+        }
+
+        const group = await groupService.createGroup(groupData);
         return res.status(201).json(group);
     } catch (error) {
         if (error.code === 422) {
@@ -168,3 +174,5 @@ groupController.get('/:id/is-public', async (req, res, next) => {//그룹 공개
         }
     }
 })
+
+export default groupController;

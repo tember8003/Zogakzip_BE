@@ -4,12 +4,12 @@ import bcrypt from 'bcrypt';
 
 //그룹 생성하기
 async function createGroup(group) {
-    //id로 그룹 찾기
+    //같은 이름이 있는지 확인
     const existedGroup = await groupRepository.findByName(group.name);
 
-    //그룹이 존재하지 않으면 에러처리
+    //같은 이름의 그룹이 있으면 에러처리
     if (existedGroup) {
-        const error = new Error('Group alreay exists - same name');
+        const error = new Error('같은 이름의 그룹이 존재합니다.');
         error.code = 422;
         error.data = { name: group.name };
         throw error;
