@@ -16,7 +16,8 @@
   },
   "scripts": {
     "dev": "nodemon src/app.js",
-    "migrate": "prisma migrate dev"
+    "migrate": "prisma migrate dev",
+    "start": "node app.js"
   },
   "devDependencies": {
     "@types/multer": "^1.4.12",
