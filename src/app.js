@@ -1,21 +1,21 @@
-import cors from 'cors';
 import * as dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 
-import groupController from './controllers/groupController.js';
+import postController from 'src/controller/postController.js';
 import ImageController from './controllers/ImageController.js';
-import errorHandler from './middlewares/errorHandler.js';
+import posterrorHandler from 'src/middlewares/posterrorHandler.js';
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+
+app.use('/api/groups/{groupId}/posts', postController);
+
 app.use('/uploads', express.static('uploads'));
-app.use('/api/groups', groupController);
+app.use(posterrorHandler);
 app.use('/api/image', ImageController);
 
-app.use(errorHandler);
-
+app.use(posterrorHandler);
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

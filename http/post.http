@@ -1,0 +1,48 @@
+##게시글 등록
+POST http://localhost:3000/api/groups/{groupId}/posts
+
+###
+##게시글 목록 조회
+GET http://localhost:3000/api/groups/{groupId}/posts
+
+###
+##게시글 수정
+POST http://localhost:3000/api/posts/{postId}
+
+###
+##게시글 삭제
+GET http://localhost:3000/api/posts/{postId}
+
+###
+##게시글 상세 정보 조회
+GET http://localhost:3000/api/posts/{postId}
+
+###
+##게시글 조회 권한 확인
+POST http://localhost:3000/api/posts/{postId}/verify-password
+
+###
+##게시글 공감하기
+POST http://localhost:3000/api/posts/{postId}/like
+
+###
+##게시글 공걔여부 확인
+GET http://localhost:3000/api/posts/{postId}/is-public
+
+###
+##댓글 등록
+POST http://localhost:3000/api/posts/{postId}/comments
+
+###
+# ##댓글 목록 조회
+# GET  http://localhost:3000/api/posts/{postId}/comments
+# ###
+# ##댓글 수정
+# PUT  http://localhost:3000/api/comments/{commentId}
+# ###
+# ##댓글 삭제
+# DELETE  http://localhost:3000/api/comments/{commentId}
+
+# ###
+# ##이미지 URL 생성
+# POST http://localhost:3000/api/image
