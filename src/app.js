@@ -5,13 +5,19 @@ import express from 'express';
 
 import groupController from './controllers/groupController.js';
 import ImageController from './controllers/ImageController.js';
+import postController from './controllers/postController.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'http://zogakzip.react.codeit.s3-website-ap-southeast-2.amazonaws.com',
+    methods: ['GET', 'POST'],
+}));
 app.use(express.json());
+
 app.use('/uploads', express.static('uploads'));
 app.use('/api/groups', groupController);
+app.use('/api/posts', postController);
 app.use('/api/image', ImageController);
 
 app.use(errorHandler);

@@ -189,6 +189,18 @@ async function getPublic(groupId) {
     return foundGroup;
 }
 
+async function plusPost(group) {
+    const foundGroup = await prisma.group.update({
+        where:{
+            id:group.id,
+        },
+        data:{
+            postCount: group.postCount+1,
+        },
+    });
+    return foundGroup;
+}
+
 
 export default {
     findByName,
@@ -203,4 +215,5 @@ export default {
     pushLike,
     getPublic,
     updateBadgeCount,
+    plusPost,
 }
