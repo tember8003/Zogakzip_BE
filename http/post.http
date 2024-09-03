@@ -6,21 +6,89 @@ Content-Type: application/json
 	"nickname": "anonymous",
     "title":"제목1",
     "content":"내용1",
-	"postPassword": "3333",
-    "groupPassword": "1234",
+	"password": "1234",
 	"imageUrl": "https://i.pinimg.com/736x/3b/e3/3d/3be33d221429fb01d3bbbf6779f4e141.jpg",
 	"isPublic": true,
     "location":"대한민국",
     "moment":"2024-02-01" 
 }
+###
+
+POST http://localhost:3000/api/groups/3/posts
+Content-Type: application/json
+
+{
+	"nickname": "anonymous3",
+    "title":"제목3",
+    "content":"내용3",
+	"password": "jtestnum",
+	"imageUrl": "https://i.pinimg.com/736x/3b/e3/3d/3be33d221429fb01d3bbbf6779f4e141.jpg",
+	"isPublic": true,
+    "location":"일본",
+    "moment":"2024-01-01" 
+}
+###
+##게시글 수정
+PUT http://localhost:3000/api/posts/4
+Content-Type: application/json
+
+{
+	"nickname": "anonymous1-수정완료",
+    "title":"제목2-수정완료",
+    "content":"내용2-수정완료",
+	"password": "jtestnum",
+	"imageUrl": "https://i.pinimg.com/736x/3b/e3/3d/3be33d221429fb01d3bbbf6779f4e141.jpg",
+	"isPublic": true,
+    "location":"한국-수정완료",
+    "moment":"2024-03-01" 
+}
+###
+
+##게시글 수정
+PUT http://localhost:3000/api/posts/5
+Content-Type: application/json
+
+{
+	"nickname": "anonymous3-수정완료",
+    "title":"제목3-수정완료",
+    "content":"내용3-수정완료",
+	"password": "jtestnum",
+	"imageUrl": "https://i.pinimg.com/736x/3b/e3/3d/3be33d221429fb01d3bbbf6779f4e141.jpg",
+	"isPublic": false,
+    "location":"일본-수정완료",
+    "moment":"2024-01-01" 
+}
+
+###
+
+//게시글 삭제
+DELETE http://localhost:3000/api/posts/2
+Content-Type: application/json
+
+{
+    "postPassword":"1234"
+}
+
+###
+
+//비밀번호 틀린 경우
+DELETE http://localhost:3000/api/posts/5
+Content-Type: application/json
+
+{
+    "postPassword":"jtestnum"
+}
+
+###
+
+
+POST http://localhost:3000/api/posts/2
+
 
 ###
 ##게시글 목록 조회
 GET http://localhost:3000/api/groups/{groupId}/posts
 
-###
-##게시글 수정
-POST http://localhost:3000/api/posts/{postId}
 
 ###
 ##게시글 삭제

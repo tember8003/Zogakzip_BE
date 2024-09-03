@@ -11,7 +11,7 @@ import errorHandler from './middlewares/errorHandler.js';
 const app = express();
 app.use(cors({
     origin: 'http://zogakzip.react.codeit.s3-website-ap-southeast-2.amazonaws.com',
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 app.use(express.json());
 

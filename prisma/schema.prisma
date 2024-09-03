@@ -49,9 +49,10 @@ model Post {
   id           Int      @id @default(autoincrement())
   nickname     String
   title        String
-  postPassword String
+  password     String
   content      String
-  tag          Tag[]
+  imageUrl     String?
+  //tag          Tag[] 일단 태그 제외.
   likeCount    Int      @default(0)
   commentCount Int      @default(0)
   moment       DateTime

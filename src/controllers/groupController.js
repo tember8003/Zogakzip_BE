@@ -176,18 +176,16 @@ groupController.get('/:id/is-public', async (req, res, next) => {//그룹 공개
     }
 })
 
-groupController.post('/:id/posts', async(req,res,next)=>{ //게시글 등록
+groupController.post('/:id/posts', async (req, res, next) => { //게시글 등록
     try {
-        const { nickname, title, content,tags, location, moment, isPublic, } = req.body;
+        const { nickname, title, content, imageUrl, location, moment, isPublic, } = req.body;
+        //나중에 tag도 추가
 
-        const postPassword = req.body.postPassword;
-        const groupPassword = req.body.groupPassword;
-        const groupId = (req.params.id,10);
-
-
+        const password = req.body.password;
+        const groupId = parseInt(req.params.id, 10);
 
         // 필수 입력값 확인
-        if (!nickname || !title || !postPassword || !content || !groupPassword) {
+        if (!nickname || !title || !password || !content) {
             return res.status(400).json({ message: '잘못된 요청입니다. - 닉네임, 제목, 비밀번호는 필수사항입니다.' });
         }
 
@@ -197,15 +195,15 @@ groupController.post('/:id/posts', async(req,res,next)=>{ //게시글 등록
             title,
             imageUrl,
             content,
-            tags: tags || [], // 기본값으로 빈 배열
+            //tags: tags || [], // 기본값으로 빈 배열
             location,
-            moment,
+            moment: new Date(moment),
             isPublic: Boolean(isPublic),
-            postPassword: postPassword,
+            password: password,
         };
 
         // 추억 등록 서비스 호출
-        const post = await postService.createPost(postData,groupId);
+        const post = await postService.createPost(postData, groupId);
         return res.status(201).json(post);
     } catch (error) {
         if (error.code === 404) {
@@ -217,32 +215,32 @@ groupController.post('/:id/posts', async(req,res,next)=>{ //게시글 등록
 })
 
 groupController.get('/', async (req, res, next) => { // 게시글 목록 조회
-	try {
-			const page = parseInt(req.query.page, 10) || 1; // 페이지 번호
-			const pageSize = parseInt(req.query.pageSize, 10) || 5; // 페이지당 항목 수
-			const sortBy = req.query.sortBy || 'latest'; // 정렬 기준 (기본값: 최신순)
+    try {
+        const page = parseInt(req.query.page, 10) || 1; // 페이지 번호
+        const pageSize = parseInt(req.query.pageSize, 10) || 5; // 페이지당 항목 수
+        const sortBy = req.query.sortBy || 'latest'; // 정렬 기준 (기본값: 최신순)
 
-			let isPublic = true; // 공개 비공개 확인용
-			if (req.query.isPublic !== undefined) {
-					isPublic = req.query.isPublic === 'true'; // 쿼리 파라미터에 따라 공개/비공개 설정
-			}
+        let isPublic = true; // 공개 비공개 확인용
+        if (req.query.isPublic !== undefined) {
+            isPublic = req.query.isPublic === 'true'; // 쿼리 파라미터에 따라 공개/비공개 설정
+        }
 
-			const keyword = req.query.keyword || null; // 검색 키워드 (제목, 태그)
+        const keyword = req.query.keyword || null; // 검색 키워드 (제목, 태그)
 
-			// 게시글 목록 조회 서비스 호출
-			const result = await postService.getPosts({
-					keyword,
-					page,
-					pageSize,
-					sortBy,
-					isPublic
-			});
+        // 게시글 목록 조회 서비스 호출
+        const result = await postService.getPosts({
+            keyword,
+            page,
+            pageSize,
+            sortBy,
+            isPublic
+        });
 
-			return res.status(200).json(result);
+        return res.status(200).json(result);
 
-	} catch (error) {
-			return next(error);
-	}
+    } catch (error) {
+        return next(error);
+    }
 });
 
 export default groupController;

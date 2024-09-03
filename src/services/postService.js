@@ -3,7 +3,7 @@ import groupRepository from '../repositories/groupRepository.js';
 import bcrypt from 'bcrypt';
 
 //게시글 생성하기
-async function createPost(post,groupId) {
+async function createPost(post, groupId) {
     //id로 그룹 찾기
     const existedGroup = await groupRepository.findById(groupId);
 
@@ -16,16 +16,16 @@ async function createPost(post,groupId) {
         throw error;
     }
 
-    const check = await bcrypt.compare(post.postPassword, existedGroup.password);
+    const check = await bcrypt.compare(post.password, existedGroup.password);
     if (!check) {
         console.log("비번 틀림");
         const error = new Error('비밀번호가 틀렸습니다.');
         error.name = 'ForbiddenError';
-        error.code = 404;
+        error.code = 403;
         throw error;
     }
 
-    const createdPost = await postRepository.createPost(post);
+    const createdPost = await postRepository.createPost(post, groupId);
     groupRepository.plusPost(existedGroup);
     return filterSensitiveGroupData(createdPost);
 }
@@ -38,7 +38,17 @@ function filterSensitiveGroupData(post) {
 
 //게시글 수정하기
 async function updatePost(post) {
-  
+    const existedPost = await postRepository.findById(post.id);
+
+    //게시글이 존재하지 않으면 에러처리
+    if (!existedPost) {
+        console.log("존재 X");
+        const error = new Error('존재하지 않습니다.');
+        error.code = 404;
+        error.data = { id: post.id };
+        throw error;
+    }
+
     //해당 id를 가진 그룹의 비밀번호와 일치하는지 확인
     const check = await bcrypt.compare(post.password, existedPost.password);
     if (!check) {
@@ -48,16 +58,16 @@ async function updatePost(post) {
         throw error;
     }
 
-    const updatedGroup = await postRepository.updateGroup(group);
+    const updatedPost = await postRepository.updatePost(post);
     return filterSensitiveGroupData(updatedPost);
 }
 
 //그룹 삭제하기
-async function deleteGroup(group, password) {
+async function deletePost(postId, password) {
     //id를 통해 그룹 존재 여부 확인
-    const existedGroup = await groupRepository.findById(group.id);
+    const existedPost = await postRepository.findById(postId);
 
-    if (!existedGroup) {
+    if (!existedPost) {
         const error = new Error('존재하지 않습니다.');
         error.name = 'NotFoundError';
         error.code = 404;
@@ -65,7 +75,7 @@ async function deleteGroup(group, password) {
     }
 
     //해당 id를 가진 그룹의 비밀번호와 일치하는지 확인
-    const check = await bcrypt.compare(password, existedGroup.password);
+    const check = await bcrypt.compare(password, existedPost.password);
     if (!check) {
         const error = new Error('비밀번호가 틀렸습니다.');
         error.name = 'ForbiddenError';
@@ -74,20 +84,20 @@ async function deleteGroup(group, password) {
     }
 
     //그룹 삭제
-    return groupRepository.deleteGroupById(group);
+    return postRepository.deletePostById(postId);
 }
 
 //정렬 기준 선정
 function getOrderBy(sortBy) {
-	if (sortBy === 'latest') {
-		orderByCondition = { createdAt: 'desc' };
-} else if (sortBy === 'comments') {
-		orderByCondition = { commentCount: 'desc' };
-} else if (sortBy === 'likes') {
-		orderByCondition = { likeCount: 'desc' };
-} else {
-		orderByCondition = { createdAt: 'desc' }; // 기본 정렬: 최신순
-}
+    if (sortBy === 'latest') {
+        orderByCondition = { createdAt: 'desc' };
+    } else if (sortBy === 'comments') {
+        orderByCondition = { commentCount: 'desc' };
+    } else if (sortBy === 'likes') {
+        orderByCondition = { likeCount: 'desc' };
+    } else {
+        orderByCondition = { createdAt: 'desc' }; // 기본 정렬: 최신순
+    }
 }
 
 //페이지 목록 조회
@@ -257,7 +267,7 @@ export default {
     createPost,
     getList,
     updatePost,
-    deleteGroup,
+    deletePost,
     getDetail,
     verifyPassword,
     pushLike,

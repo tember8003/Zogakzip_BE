@@ -20,6 +20,7 @@
     "start": "node src/app.js"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/multer": "^1.4.12",
     "nodemon": "^3.1.4"
   }
