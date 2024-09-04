@@ -10,8 +10,11 @@ groupController.post('/', async (req, res, next) => {//그룹 등록
     try {
         const { name, password, isPublic, introduction, imageUrl } = req.body;
 
-        if (!name || !password) {
-            return res.status(404).json({ message: '잘못된 요청입니다. - 이름과 비밀번호는 필수사항입니다.' });
+        if(!name ){
+            return res.status(404).json({ message: '잘못된 요청입니다. - 이름은 필수사항입니다.' });
+        }
+        if (!password) {
+            return res.status(404).json({ message: '잘못된 요청입니다. - 비밀번호는 필수사항입니다.' });
         }
 
         const groupData = {
