@@ -12,9 +12,11 @@ const app = express();
 app.use(cors({
     origin: 'http://zogakzip.react.codeit.s3-website-ap-southeast-2.amazonaws.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
 app.use(express.json());
 
+app.options('*', cors());
 app.get('/', (req, res) => {
     res.status(201).json('Welcome');
 });
