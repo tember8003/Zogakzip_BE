@@ -220,27 +220,30 @@ groupController.post('/:id/posts', async (req, res, next) => { //게시글 등�
     }
 })
 
-groupController.get('/', async (req, res, next) => { // 게시글 목록 조회
+groupController.get('/:id/posts', async (req, res, next) => { // 게시글 목록 조회
     try {
         const page = parseInt(req.query.page, 10) || 1; // 페이지 번호
         const pageSize = parseInt(req.query.pageSize, 10) || 5; // 페이지당 항목 수
         const sortBy = req.query.sortBy || 'latest'; // 정렬 기준 (기본값: 최신순)
+
+        const groupId = parseInt(req.params.id, 10);
 
         let isPublic = true; // 공개 비공개 확인용
         if (req.query.isPublic !== undefined) {
             isPublic = req.query.isPublic === 'true'; // 쿼리 파라미터에 따라 공개/비공개 설정
         }
 
-        const keyword = req.query.keyword || null; // 검색 키워드 (제목, 태그)
+        const name = req.query.keyword || null; // 검색 키워드 (제목, 태그)
 
         // 게시글 목록 조회 서비스 호출
-        const result = await postService.getPosts({
-            keyword,
+        const result = await postService.getPosts(
+            name,
             page,
             pageSize,
             sortBy,
-            isPublic
-        });
+            isPublic,
+            groupId
+        );
 
         return res.status(200).json(result);
 

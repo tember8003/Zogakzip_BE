@@ -120,6 +120,48 @@ async function getGroups(pageSkip, pageTake, orderBy, name, publicCheck) {
     return groups;
 }
 
+//게시글 목록 조회용
+async function getPosts(skip, take, orderBy, name, publicCheck, groupId) {
+    const posts = await prisma.group.findMany({
+        where: {
+            id: groupId,
+            isPublic: publicCheck,
+            // title에 name을 포함하는 게시물만 필터링
+            ...(name && {
+                Post: {
+                    some: {
+                        title: { contains: name }
+                    }
+                }
+            }) // 제목에 name을 포함하는 게시물만 필터링
+        },
+        orderBy: orderBy || undefined,
+        skip: skip,
+        take: take,
+        select: {
+            Post: {
+                ...(name && { // name이 있을 때만 title 필터링 적용
+                    where: { title: { contains: name } }
+                }),
+                select: {
+                    id: true,
+                    nickname: true,
+                    title: true,
+                    imageUrl: true,
+                    location: true,
+                    moment: true,
+                    isPublic: true,
+                    likeCount: true,
+                    commentCount: true,
+                    createdAt: true,
+                },
+            },
+        },
+    });
+
+    return posts;
+}
+
 //그룹 수 세기
 async function countGroups(name, publicCheck) {
     const groups = prisma.group.count({
@@ -128,7 +170,26 @@ async function countGroups(name, publicCheck) {
             ...(name & { name: { contains: name } }),
         },
     });
-    return groups
+    return groups;
+}
+
+//게시글 개수 세기
+async function countPosts(name, publicCheck, groupId) {
+
+    const posts = prisma.group.count({
+        where: {
+            id: groupId,
+            isPublic: publicCheck,
+            ...(name && {
+                Post: {
+                    some: {
+                        title: { contains: name }
+                    }
+                }
+            })
+        },
+    });
+    return posts;
 }
 
 
@@ -155,6 +216,7 @@ async function pushLike(group) {
     return likeGroup;
 }
 
+//배지 카운트 업데이트하기
 async function updateBadgeCount(groupId) {
     const findCount = await prisma.badge.count({
         where: {
@@ -189,13 +251,14 @@ async function getPublic(groupId) {
     return foundGroup;
 }
 
+//게시글 올리면 postCount + 1
 async function plusPost(group) {
     const foundGroup = await prisma.group.update({
-        where:{
-            id:group.id,
+        where: {
+            id: group.id,
         },
-        data:{
-            postCount: group.postCount+1,
+        data: {
+            postCount: group.postCount + 1,
         },
     });
     return foundGroup;
@@ -216,4 +279,6 @@ export default {
     getPublic,
     updateBadgeCount,
     plusPost,
+    getPosts,
+    countPosts,
 }
