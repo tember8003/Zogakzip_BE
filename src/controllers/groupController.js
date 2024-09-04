@@ -2,18 +2,21 @@ import express from 'express';
 import groupService from '../services/groupService.js';
 import postService from '../services/postService.js';
 import badgeRepository from '../repositories/badgeRepository.js';
+import { is } from 'superstruct';
 
 const groupController = express.Router();
 
 
 groupController.post('/', async (req, res, next) => {//그룹 등록
     try {
+        console.log("그룹 생성 들어옴");
         const { name, password, isPublic, introduction, imageUrl } = req.body;
+        console.log(name, password, imageUrl, isPublic, introduction);
 
         if (!password) {
             return res.status(404).json({ message: '잘못된 요청입니다. - 비밀번호는 필수사항입니다.' });
         }
-        if(!name ){
+        if (!name) {
             return res.status(404).json({ message: '잘못된 요청입니다. - 이름은 필수사항입니다.' });
         }
 
