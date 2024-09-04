@@ -16,7 +16,7 @@ app.use(cors({
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('Welcome');
+    res.status(201).json('Welcome');
 });
 app.use('/uploads', express.static('uploads'));
 app.use('/api/groups', groupController);
