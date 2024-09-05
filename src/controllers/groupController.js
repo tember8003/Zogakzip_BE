@@ -3,21 +3,6 @@ import groupService from '../services/groupService.js';
 import postService from '../services/postService.js';
 import badgeRepository from '../repositories/badgeRepository.js';
 import { is } from 'superstruct';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 435913b (Fix : merge 해결)
-import multer from 'multer';
-
-const upload = multer({ dest: 'uploads/' }); // 파일을 임시로 저장할 경로 설정
-<<<<<<< HEAD
->>>>>>> dce4a09 (Test:form-data 형식을 json으로 바꾸기)
-=======
->>>>>>> 435913b (Fix : merge 해결)
-=======
->>>>>>> edbc966 (Fix: merge 현상 + 게시물 API)
 
 const groupController = express.Router();
 
@@ -25,24 +10,7 @@ const groupController = express.Router();
 groupController.post('/', async (req, res, next) => {//그룹 등록
     try {
         console.log("그룹 생성 들어옴");
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         const { name, password, isPublic, introduction, imageUrl } = req.body;
-=======
-        const { name, password, isPublic, introduction } = req.body;
-        const imageUrl = req.file ? req.file.path : null;  // 이미지 파일 경로 설정
-        
->>>>>>> dce4a09 (Test:form-data 형식을 json으로 바꾸기)
-=======
-        const { name, password, isPublic, introduction } = req.body;
-        const imageUrl = req.file ? req.file.path : null;  // 이미지 파일 경로 설정
-        //const { name, password, isPublic, introduction, imageUrl } = req.body;
-        
->>>>>>> 435913b (Fix : merge 해결)
-=======
-        const { name, password, isPublic, introduction, imageUrl } = req.body;
->>>>>>> edbc966 (Fix: merge 현상 + 게시물 API)
         console.log(name, password, imageUrl, isPublic, introduction);
 
         if (!password) {
