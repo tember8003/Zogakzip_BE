@@ -16,6 +16,7 @@ async function createGroup(group) {
     }
 
     const createdGroup = await groupRepository.save(group);
+    console.log(createGroup.id);
     return filterSensitiveGroupData(createdGroup);
 }
 

@@ -78,7 +78,11 @@ async function save(group) {
     //비밀번호 해싱 작업
     const hashedPassword = await bcrypt.hash(group.password, 10);
 
+<<<<<<< HEAD
     const groupData = await prisma.group.create({
+=======
+    const groupData = prisma.group.create({
+>>>>>>> 6eee1e6 (Fix: console.log(id) 추가)
         data: {
             name: group.name,
             password: hashedPassword,
@@ -90,7 +94,11 @@ async function save(group) {
             introduction: group.introduction,
         },
     });
+<<<<<<< HEAD
     console.log(groupData.id);
+=======
+    console.log(group.id);
+>>>>>>> 6eee1e6 (Fix: console.log(id) 추가)
     return groupData;
 }
 
