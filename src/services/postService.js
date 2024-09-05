@@ -9,7 +9,6 @@ async function createPost(post, groupId) {
 
     //그룹이 존재하지 않으면 에러처리
     if (!existedGroup) {
-        console.log("존재 X");
         const error = new Error('존재하지 않습니다.');
         error.code = 404;
         error.data = { id: groupId };
@@ -18,7 +17,6 @@ async function createPost(post, groupId) {
 
     const check = await bcrypt.compare(post.password, existedGroup.password);
     if (!check) {
-        console.log("비번 틀림");
         const error = new Error('비밀번호가 틀렸습니다.');
         error.name = 'ForbiddenError';
         error.code = 403;

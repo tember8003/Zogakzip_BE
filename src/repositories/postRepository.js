@@ -96,6 +96,34 @@ async function getDetail(postId) {
 	});
 }
 
+//댓글 목록 조회용
+async function getComments(skip, take, postId) {
+	const comments = await prisma.comment.findMany({
+		where: {
+			postId: postId,  // postId를 기준으로 댓글 필터링
+		},
+		skip: skip,  // 페이지 시작 번호
+		take: take,  // 페이지 크기
+		select: {  // 필요한 필드 선택
+			id: true,
+			nickname: true,
+			content: true,
+			createdAt: true,
+		},
+	});
+	return comments;
+}
+
+//댓글 개수 세기
+async function countComments(postId) {
+	const commentCount = await prisma.comment.count({
+		where: {
+			postId: postId,  // postId를 기준으로 필터링
+		},
+	});
+	return commentCount;
+}
+
 // 공감 보내기
 async function addLikeToPost(postId) {
 	return prisma.post.update({
@@ -108,46 +136,6 @@ async function addLikeToPost(postId) {
 			},
 		},
 	});
-}
-//////////////////////////////////////////////////////////게시글 조회 권한 확인
-async function getGroupPosts(groupId, filterOptions) {
-	const { isPublic, sortBy, searchQuery } = filterOptions;
-
-	// 기본 조건: 그룹 ID와 공개 여부에 따라 필터링
-	let whereCondition = {
-		groupId: groupId,
-		isPublic: isPublic,
-	};
-
-	// 검색 조건 추가: 제목 또는 태그로 검색
-	if (searchQuery) {
-		whereCondition = {
-			...whereCondition,
-			OR: [
-				{ title: { contains: searchQuery } },
-				{ tags: { contains: searchQuery } },
-			],
-		};
-	}
-
-	// 게시글 조회
-	const post = await prisma.post.findMany({
-		where: whereCondition,
-		orderBy: orderByCondition,
-		select: {
-			nickname: true,
-			isPublic: true,
-			title: true,
-			imageUrl: true,
-			tags: true,
-			place: true,
-			moment: true,
-			likeCount: true,
-			commentCount: true,
-		},
-	});
-
-	return post;
 }
 
 //게시글 공감하기
@@ -203,6 +191,19 @@ async function checkPostPublicStatus(postId) {
 	return foundPost;
 }
 
+//댓글 달면 commentCount +1
+async function plusComment(post) {
+	const foundPost = await prisma.post.update({
+		where: {
+			id: post.id,
+		},
+		data: {
+			commentCount: post.commentCount + 1,
+		},
+	});
+	return foundPost;
+}
+
 export default {
 	createPost,
 	updatePost,
@@ -210,7 +211,9 @@ export default {
 	deletePostById,
 	getDetail,
 	addLikeToPost,
-	getGroupPosts,
 	likePost,
 	checkPostPublicStatus,
+	plusComment,
+	countComments,
+	getComments,
 }

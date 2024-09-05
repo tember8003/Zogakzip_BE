@@ -1,0 +1,93 @@
+POST http://localhost:3000/api/posts/3/comments
+Content-Type: application/json
+
+{
+	"nickname": "hong",
+	"content": "댓글1",
+	"password": "1234"
+}
+
+###
+
+POST http://localhost:3000/api/posts/3/comments
+Content-Type: application/json
+
+{
+	"nickname": "honggildong",
+	"content": "hello",
+	"password": "12345"
+}
+
+###
+
+POST http://localhost:3000/api/posts/3/comments
+Content-Type: application/json
+
+{
+	"nickname": "ho",
+	"content": "hello",
+	"password": "123453"
+}
+
+###
+
+POST http://localhost:3000/api/posts/3/comments
+Content-Type: application/json
+
+{
+	"nickname": "ho3",
+	"content": "hello",
+	"password": "12343"
+}
+
+###
+
+GET http://localhost:3000/api/posts/3/comments?page=1&pageSize=2
+Content-Type: application/json
+
+###
+
+//댓글 수정 - 비밀번호 틀림
+PUT http://localhost:3000/api/comments/3
+Content-Type: application/json
+
+{
+	"nickname": "ho33333",
+	"content": "hello",
+	"password": "12343"
+}
+
+###
+
+//댓글 수정 - 
+PUT http://localhost:3000/api/comments/1
+Content-Type: application/json
+
+{
+	"nickname": "hong-수정",
+	"content": "댓글1-수정",
+	"password": "1234"
+}
+
+###
+
+//댓글 삭제 - 비밀번호 틀림
+
+DELETE http://localhost:3000/api/comments/2
+Content-Type: application/json
+
+{
+	"password": "1234"
+}
+
+###
+//댓글 삭제 - 성공
+
+DELETE http://localhost:3000/api/comments/2
+Content-Type: application/json
+
+{
+	"password": "12345"
+}
+
+

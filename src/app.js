@@ -7,6 +7,7 @@ import groupController from './controllers/groupController.js';
 import ImageController from './controllers/ImageController.js';
 import postController from './controllers/postController.js';
 import errorHandler from './middlewares/errorHandler.js';
+import commentController from './controllers/commentController.js';
 
 const app = express();
 app.use(cors({
@@ -25,6 +26,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/groups', groupController);
 app.use('/api/posts', postController);
 app.use('/api/image', ImageController);
+app.use('/api/comments', commentController);
 
 app.use(errorHandler);
 

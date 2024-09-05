@@ -149,5 +149,50 @@ postController.get('/:id/is-public', async (req, res, next) => { // 게시글 �
 	}
 });
 
+postController.post('/:id/comments', async (req, res, next) => {//댓글 등록
+	try {
+		const id = parseInt(req.params.id, 10);
+		const { nickname, password, content } = req.body;
+
+		if (!nickname || !password || !content) {
+			return res.status(404).json({ message: '잘못된 요청입니다. - 닉네임과 비밀번호, 내용은 필수사항입니다.' });
+		}
+
+		const commentData = {
+			nickname,
+			password,
+			content,
+		}
+
+		const comment = await commentService.addComment(commentData, id);
+		return res.status(201).json(comment);
+	} catch (error) {
+		if (error.code === 422) {
+			res.status(422).json({ message: "댓글 등록 중 오류 발생" })
+		} else {
+			return next(error);
+		}
+	}
+});
+
+
+postController.get('/:id/comments', async (req, res, next) => {  //댓글 상세 목록
+	try {
+		const postId = parseInt(req.params.id, 10);
+		const page = parseInt(req.query.page) || 1;
+		const pageSize = parseInt(req.query.pageSize) || 5;
+
+		const result = await commentService.getComment(page, pageSize, postId);
+
+
+		return res.json(result);
+
+	} catch (error) {
+
+		return next(error);
+	}
+});
+
+
 
 export default postController;
