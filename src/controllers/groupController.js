@@ -46,10 +46,10 @@ groupController.post('/', async (req, res, next) => {//그룹 등록
         console.log(name, password, imageUrl, isPublic, introduction);
 
         if (!password) {
-            return res.status(404).json({ message: '잘못된 요청입니다. - 비밀번호는 필수사항입니다.' });
+            return res.status(400).json({ message: '잘못된 요청입니다. - 비밀번호는 필수사항입니다.' });
         }
         if (!name) {
-            return res.status(404).json({ message: '잘못된 요청입니다. - 이름은 필수사항입니다.' });
+            return res.status(400).json({ message: '잘못된 요청입니다. - 이름은 필수사항입니다.' });
         }
 
         const groupData = {
