@@ -180,20 +180,28 @@ async function pushLike(postId) {
         throw error;
     }
 
-    /* 배지는 아직 작업 X
-    //그룹 공감 1만 개 이상이면 배지 주기
-    const likeCount = checkLike(existedGroup);
+    //추억 공감 1만 개 이상이면 배지 주기
+    const likeCount = postLike(existedPost);
     if (likeCount) {
-        const name = "그룹 공감 1만개 이상";
-        const existedBadge = await badgeRepository.findByName(name, groupId);
+        const name = "추억 공감 1만개 이상";
+        const existedBadge = await badgeRepository.findByName(name, existedPost.groupId);
 
         if (!existedBadge) {
-            await badgeRepository.save({ name: name, groupId: groupId });
+            await badgeRepository.save({ name: name, groupId: existedPost.groupId });
         }
     }
-    */
 
     return await postRepository.addLikeToPost(postId);
+}
+
+function postLike(existedPost) {
+    const postLike = existedPost.likeCount;
+    if (postLike >= 10000) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 //그룹 공개 여부 확인용

@@ -227,9 +227,30 @@ async function grantBadge(groupId) {
             await badgeRepository.save({ name: name, groupId: groupId });
         }
     }
+
+    //추억 수 20개 이상
+    const postCount = checkPost(existedGroup);
+    if (postCount) {
+        const name = "추억 수 20개 이상 등록";
+        const existedBadge = await badgeRepository.findByName(name, groupId);
+
+        if (!existedBadge) {
+            await badgeRepository.save({ name: name, groupId: groupId });
+        }
+    }
+
     await groupRepository.updateBadgeCount(groupId);
 }
 
+function checkPost(group) {
+    const postCount = group.postCount;
+    if (postCount >= 20) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 function checkLike(group) {
     const likeCount = group.likeCount;
