@@ -95,10 +95,14 @@ async function save(group) {
         },
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
     console.log(groupData.id);
 =======
     console.log(group.id);
 >>>>>>> 6eee1e6 (Fix: console.log(id) 추가)
+=======
+    console.log(groupData.id);
+>>>>>>> 0ca7753 (Fix: 그룹 ID 출력)
     return groupData;
 }
 
