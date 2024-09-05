@@ -124,6 +124,7 @@ async function getGroups(pageSkip, pageTake, orderBy, name, publicCheck) {
 
 //게시글 목록 조회용
 async function getPosts(skip, take, orderBy, name, publicCheck, groupId) {
+<<<<<<< HEAD
     const posts = await prisma.post.findMany({
         where: {
             groupId: groupId, // 그룹 ID로 필터링
@@ -148,6 +149,42 @@ async function getPosts(skip, take, orderBy, name, publicCheck, groupId) {
             likeCount: true,
             commentCount: true,
             createdAt: true,
+=======
+    const posts = await prisma.group.findMany({
+        where: {
+            id: groupId,
+            isPublic: publicCheck,
+            // title에 name을 포함하는 게시물만 필터링
+            ...(name && {
+                Post: {
+                    some: {
+                        title: { contains: name }
+                    }
+                }
+            }) // 제목에 name을 포함하는 게시물만 필터링
+        },
+        orderBy: orderBy || undefined,
+        skip: skip,
+        take: take,
+        select: {
+            Post: {
+                ...(name && { // name이 있을 때만 title 필터링 적용
+                    where: { title: { contains: name } }
+                }),
+                select: {
+                    id: true,
+                    nickname: true,
+                    title: true,
+                    imageUrl: true,
+                    location: true,
+                    moment: true,
+                    isPublic: true,
+                    likeCount: true,
+                    commentCount: true,
+                    createdAt: true,
+                },
+            },
+>>>>>>> dce4a09 (Test:form-data 형식을 json으로 바꾸기)
         },
     });
 
@@ -167,6 +204,7 @@ async function countGroups(name, publicCheck) {
 
 //게시글 개수 세기
 async function countPosts(name, publicCheck, groupId) {
+<<<<<<< HEAD
     const postCount = await prisma.post.count({
         where: {
             groupId: groupId, // 그룹 ID로 필터링
@@ -179,6 +217,23 @@ async function countPosts(name, publicCheck, groupId) {
         },
     });
     return postCount;
+=======
+
+    const posts = prisma.group.count({
+        where: {
+            id: groupId,
+            isPublic: publicCheck,
+            ...(name && {
+                Post: {
+                    some: {
+                        title: { contains: name }
+                    }
+                }
+            })
+        },
+    });
+    return posts;
+>>>>>>> dce4a09 (Test:form-data 형식을 json으로 바꾸기)
 }
 
 

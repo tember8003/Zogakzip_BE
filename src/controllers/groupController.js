@@ -3,14 +3,25 @@ import groupService from '../services/groupService.js';
 import postService from '../services/postService.js';
 import badgeRepository from '../repositories/badgeRepository.js';
 import { is } from 'superstruct';
+<<<<<<< HEAD
+=======
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/' }); // 파일을 임시로 저장할 경로 설정
+>>>>>>> dce4a09 (Test:form-data 형식을 json으로 바꾸기)
 
 const groupController = express.Router();
 
 
-groupController.post('/', async (req, res, next) => {//그룹 등록
+groupController.post('/', upload.single('image'),async (req, res, next) => {//그룹 등록
     try {
         console.log("그룹 생성 들어옴");
+<<<<<<< HEAD
         const { name, password, isPublic, introduction, imageUrl } = req.body;
+=======
+        const { name, password, isPublic, introduction } = req.body;
+        const imageUrl = req.file ? req.file.path : null;  // 이미지 파일 경로 설정
+        
+>>>>>>> dce4a09 (Test:form-data 형식을 json으로 바꾸기)
         console.log(name, password, imageUrl, isPublic, introduction);
 
         if (!password) {

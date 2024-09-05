@@ -138,6 +138,46 @@ async function addLikeToPost(postId) {
 	});
 }
 
+<<<<<<< HEAD
+=======
+	// 기본 조건: 그룹 ID와 공개 여부에 따라 필터링
+	let whereCondition = {
+		groupId: groupId,
+		isPublic: isPublic,
+	};
+
+	// 검색 조건 추가: 제목 또는 태그로 검색
+	if (searchQuery) {
+		whereCondition = {
+			...whereCondition,
+			OR: [
+				{ title: { contains: searchQuery } },
+				{ tags: { contains: searchQuery } },
+			],
+		};
+	}
+
+	// 게시글 조회
+	const post = await prisma.post.findMany({
+		where: whereCondition,
+		orderBy: orderByCondition,
+		select: {
+			nickname: true,
+			isPublic: true,
+			title: true,
+			imageUrl: true,
+			tags: true,
+			place: true,
+			moment: true,
+			likeCount: true,
+			commentCount: true,
+		},
+	});
+
+	return post;
+}
+
+>>>>>>> dce4a09 (Test:form-data 형식을 json으로 바꾸기)
 //게시글 공감하기
 // 게시글에 좋아요를 눌렀는지 확인하는 함수
 async function likePost(postId, userId) {
@@ -189,6 +229,7 @@ async function checkPostPublicStatus(postId) {
 		},
 	});
 	return foundPost;
+<<<<<<< HEAD
 }
 
 //댓글 달면 commentCount +1
@@ -202,6 +243,8 @@ async function plusComment(post) {
 		},
 	});
 	return foundPost;
+=======
+>>>>>>> dce4a09 (Test:form-data 형식을 json으로 바꾸기)
 }
 
 export default {
