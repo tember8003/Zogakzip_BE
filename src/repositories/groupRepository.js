@@ -79,10 +79,14 @@ async function save(group) {
     const hashedPassword = await bcrypt.hash(group.password, 10);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     const groupData = await prisma.group.create({
 =======
     const groupData = prisma.group.create({
 >>>>>>> 6eee1e6 (Fix: console.log(id) 추가)
+=======
+    const groupData = await prisma.group.create({
+>>>>>>> 44cc4bc (Fix:그룹 ID 출력 2번째)
         data: {
             name: group.name,
             password: hashedPassword,
