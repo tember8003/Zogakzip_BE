@@ -11,9 +11,8 @@ import commentController from './controllers/commentController.js';
 
 const app = express();
 app.use(cors({
-    origin: 'http://zogakzip.react.codeit.s3-website-ap-southeast-2.amazonaws.com',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
 }));
 
 app.options('*', cors());
