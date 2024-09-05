@@ -10,8 +10,11 @@ import errorHandler from './middlewares/errorHandler.js';
 import commentController from './controllers/commentController.js';
 
 const app = express();
+app.use((req, res) => {
+    res.header("Access-Control-Allow-Origin", "*"); // 모든 도메인 허용
+});
 app.use(cors({
-    origin: 'http://zogakzip.react.codeit.s3-website-ap-southeast-2.amazonaws.com',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
