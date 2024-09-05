@@ -78,7 +78,7 @@ async function save(group) {
     //비밀번호 해싱 작업
     const hashedPassword = await bcrypt.hash(group.password, 10);
 
-    return prisma.group.create({
+    const groupData = await prisma.group.create({
         data: {
             name: group.name,
             password: hashedPassword,
@@ -90,6 +90,8 @@ async function save(group) {
             introduction: group.introduction,
         },
     });
+    console.log(groupData.id);
+    return groupData;
 }
 
 //그룹 목록 조회용 조건에 맞게 그룹 찾기
