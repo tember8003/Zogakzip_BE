@@ -33,7 +33,7 @@ groupController.post('/', upload.single('image'),async (req, res, next) => {//�
 =======
         const { name, password, isPublic, introduction } = req.body;
         const imageUrl = req.file ? req.file.path : null;  // 이미지 파일 경로 설정
-        const { name, password, isPublic, introduction, imageUrl } = req.body;
+        //const { name, password, isPublic, introduction, imageUrl } = req.body;
         
 >>>>>>> 435913b (Fix : merge 해결)
         console.log(name, password, imageUrl, isPublic, introduction);
