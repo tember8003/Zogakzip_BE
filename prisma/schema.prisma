@@ -34,12 +34,21 @@ enum Tag {
   TAG3
 }
 
+model Comment {
+  id        Int      @id @default(autoincrement())
+  nickname  String
+  content   String
+  password  String
+  createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+}
+
 model Badge {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String? //배지 설명 -> 빠질 수도 있음.
-  group       Group   @relation(fields: [groupId], references: [id])
-  groupId     Int
+  id      Int    @id @default(autoincrement())
+  name    String
+  group   Group  @relation(fields: [groupId], references: [id])
+  groupId Int
 
   // name과 groupId의 조합을 유니크로 설정 -> badge 등록 중 error가 발생하는 문제 해결용
   @@unique([name, groupId])
@@ -60,6 +69,7 @@ model Post {
   isPublic     Boolean
   location     String
 
-  group   Group @relation(fields: [groupId], references: [id]) // 단일 필드로 관계 설정
+  group   Group     @relation(fields: [groupId], references: [id]) // 단일 필드로 관계 설정
   groupId Int
+  Comment Comment[]
 }
