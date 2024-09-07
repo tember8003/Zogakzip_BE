@@ -71,7 +71,6 @@ async function deletePostById(postId) {
 }
 
 
-//////////////////////////////////////////////////////////게시글 상세 (정보)조회
 // 게시글 상세 조회
 async function getDetail(postId) {
 	return prisma.post.findUnique({
@@ -125,7 +124,7 @@ async function countComments(postId) {
 }
 
 // 공감 보내기
-async function addLikeToPost(postId) {
+async function addLike(postId) {
 	return prisma.post.update({
 		where: {
 			id: postId,
@@ -138,43 +137,6 @@ async function addLikeToPost(postId) {
 	});
 }
 
-//게시글 공감하기
-// 게시글에 좋아요를 눌렀는지 확인하는 함수
-async function likePost(postId, userId) {
-	// 요청에 보낼 데이터
-	const data = {
-		userId: userId  // 좋아요를 누른 사용자 ID
-	};
-
-	try {
-		// fetch를 사용하여 POST 요청 보내기
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				// 인증 토큰이 필요한 경우 아래 줄을 추가
-				// 'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
-			},
-			body: JSON.stringify(data)
-		});
-
-		// 응답 처리
-		if (response.ok) {
-			const result = await response.json();
-			if (result.success) {
-				console.log("게시글에 좋아요가 성공적으로 추가되었습니다.", result);
-				return result;
-			} else {
-				console.error("게시글에 좋아요 추가에 실패했습니다.", result);
-				return result;
-			}
-		} else {
-			console.error(`게시글에 좋아요 추가에 실패했습니다. 상태 코드: ${response.status}`);
-		}
-	} catch (error) {
-		console.error("네트워크 오류:", error);
-	}
-}
 
 
 //게시글 공개 여부 확인
@@ -210,8 +172,7 @@ export default {
 	findById,
 	deletePostById,
 	getDetail,
-	addLikeToPost,
-	likePost,
+	addLike,
 	checkPostPublicStatus,
 	plusComment,
 	countComments,

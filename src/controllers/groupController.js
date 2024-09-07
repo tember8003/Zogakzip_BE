@@ -6,8 +6,8 @@ import { is } from 'superstruct';
 
 const groupController = express.Router();
 
-
-groupController.post('/', async (req, res, next) => {//그룹 등록
+//그룹 등록
+groupController.post('/', async (req, res, next) => {
     try {
         console.log("그룹 생성 들어옴");
         const { name, password, isPublic, introduction, imageUrl } = req.body;
@@ -39,7 +39,8 @@ groupController.post('/', async (req, res, next) => {//그룹 등록
     }
 });
 
-groupController.get('/', async (req, res, next) => {//그룹 목록 조회
+//그룹 목록 조회
+groupController.get('/', async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.pageSize) || 5;
@@ -60,7 +61,8 @@ groupController.get('/', async (req, res, next) => {//그룹 목록 조회
     }
 });
 
-groupController.put('/:id', async (req, res, next) => {//그룹 수정
+//그룹 수정
+groupController.put('/:id', async (req, res, next) => {
     try {
         const groupId = parseInt(req.params.id, 10);
         const inputPassword = req.body.password;
@@ -84,7 +86,8 @@ groupController.put('/:id', async (req, res, next) => {//그룹 수정
     }
 });
 
-groupController.delete('/:id', async (req, res, next) => {//그룹 삭제
+//그룹 삭제
+groupController.delete('/:id', async (req, res, next) => {
     try {
         const groupId = parseInt(req.params.id, 10);
         const password = req.body.password;
@@ -107,7 +110,8 @@ groupController.delete('/:id', async (req, res, next) => {//그룹 삭제
     }
 });
 
-groupController.get('/:id', async (req, res, next) => { //그룹 상세 정보 조회
+//그룹 상세 정보 조회
+groupController.get('/:id', async (req, res, next) => {
     try {
         const groupId = parseInt(req.params.id, 10);
         const group = await groupService.getDetail(groupId);
@@ -125,11 +129,14 @@ groupController.get('/:id', async (req, res, next) => { //그룹 상세 정보 �
     }
 });
 
+//그룹 조회 권한 확인 
 //!--주의--! 메시지는 나오도록 설정됐지만, 다른 기능은 없음. -> 잘 구현됐는지 미지수
-groupController.post('/:id/verify-password', async (req, res, next) => { //그룹 조회 권한 확인 
+groupController.post('/:id/verify-password', async (req, res, next) => {
     try {
         const groupId = parseInt(req.params.id, 10);
-        const password = req.body.password; // 요청 본문에서 비밀번호 추출
+
+        // 요청 본문에서 비밀번호 추출
+        const password = req.body.password;
 
         if (!password) {
             return res.status(400).json({ message: '잘못된 요청입니다.' });
@@ -150,7 +157,8 @@ groupController.post('/:id/verify-password', async (req, res, next) => { //그�
     }
 });
 
-groupController.post('/:id/like', async (req, res, next) => { //그룹 공감하기
+//그룹 공감하기
+groupController.post('/:id/like', async (req, res, next) => {
     try {
         const groupId = parseInt(req.params.id, 10);
 
@@ -167,7 +175,8 @@ groupController.post('/:id/like', async (req, res, next) => { //그룹 공감하
     }
 })
 
-groupController.get('/:id/is-public', async (req, res, next) => {//그룹 공개 여부 확인하기
+//그룹 공개 여부 확인하기
+groupController.get('/:id/is-public', async (req, res, next) => {
     try {
         const groupId = parseInt(req.params.id, 10);
 
@@ -182,7 +191,8 @@ groupController.get('/:id/is-public', async (req, res, next) => {//그룹 공개
     }
 })
 
-groupController.post('/:id/posts', async (req, res, next) => { //게시글 등록
+//게시글 등록
+groupController.post('/:id/posts', async (req, res, next) => {
     try {
         const { nickname, title, content, imageUrl, location, moment, isPublic, } = req.body;
         //나중에 tag도 추가
@@ -220,7 +230,8 @@ groupController.post('/:id/posts', async (req, res, next) => { //게시글 등�
     }
 })
 
-groupController.get('/:id/posts', async (req, res, next) => { // 게시글 목록 조회
+// 게시글 목록 조회
+groupController.get('/:id/posts', async (req, res, next) => {
     try {
         const page = parseInt(req.query.page, 10) || 1; // 페이지 번호
         const pageSize = parseInt(req.query.pageSize, 10) || 5; // 페이지당 항목 수
@@ -230,10 +241,12 @@ groupController.get('/:id/posts', async (req, res, next) => { // 게시글 목�
 
         let isPublic = true; // 공개 비공개 확인용
         if (req.query.isPublic !== undefined) {
-            isPublic = req.query.isPublic === 'true'; // 쿼리 파라미터에 따라 공개/비공개 설정
+            // 쿼리 파라미터에 따라 공개/비공개 설정
+            isPublic = req.query.isPublic === 'true';
         }
 
-        const name = req.query.keyword || null; // 검색 키워드 (제목, 태그)
+        // 검색 키워드 (제목, 태그)
+        const name = req.query.keyword || null;
 
         // 게시글 목록 조회 서비스 호출
         const result = await postService.getPosts(

@@ -79,7 +79,7 @@ async function getDetail(commentId) {
 
 
 
-//id를 통해 그룹 삭제하기
+//id를 통해 댓글 삭제하기
 async function deleteCommentById(commentId) {
     const deletedComment = await prisma.comment.delete({
         where: {

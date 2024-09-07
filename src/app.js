@@ -10,6 +10,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import commentController from './controllers/commentController.js';
 
 const app = express();
+//백엔드 코드 배포용 설정
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],

@@ -4,10 +4,10 @@ import bcrypt from 'bcrypt';
 
 //게시글 생성하기
 async function createPost(post, groupId) {
-    //id로 그룹 찾기
+    //id로 게시글 찾기
     const existedGroup = await groupRepository.findById(groupId);
 
-    //그룹이 존재하지 않으면 에러처리
+    //게시글이 존재하지 않으면 에러처리
     if (!existedGroup) {
         const error = new Error('존재하지 않습니다.');
         error.code = 404;
@@ -47,7 +47,7 @@ async function updatePost(post) {
         throw error;
     }
 
-    //해당 id를 가진 그룹의 비밀번호와 일치하는지 확인
+    //해당 id를 가진 게시글의 비밀번호와 일치하는지 확인
     const check = await bcrypt.compare(post.password, existedPost.password);
     if (!check) {
         const error = new Error('비밀번호가 틀렸습니다.');
@@ -60,9 +60,9 @@ async function updatePost(post) {
     return filterSensitiveGroupData(updatedPost);
 }
 
-//그룹 삭제하기
+//게시글 삭제하기
 async function deletePost(postId, password) {
-    //id를 통해 그룹 존재 여부 확인
+    //id를 통해 게시글 존재 여부 확인
     const existedPost = await postRepository.findById(postId);
 
     if (!existedPost) {
@@ -72,7 +72,7 @@ async function deletePost(postId, password) {
         throw error;
     }
 
-    //해당 id를 가진 그룹의 비밀번호와 일치하는지 확인
+    //해당 id를 가진 게시글의 비밀번호와 일치하는지 확인
     const check = await bcrypt.compare(password, existedPost.password);
     if (!check) {
         const error = new Error('비밀번호가 틀렸습니다.');
@@ -81,7 +81,7 @@ async function deletePost(postId, password) {
         throw error;
     }
 
-    //그룹 삭제
+    //게시글 삭제
     return postRepository.deletePostById(postId);
 }
 
@@ -112,7 +112,7 @@ async function getPosts(name, page, pageSize, sortBy, publicCheck, groupId) {
     }
 
     const skip = (page - 1) * pageSize; //페이지 시작 번호
-    const take = pageSize; //한 페이지당 그룹 수
+    const take = pageSize; //한 페이지당 게시글 수
 
     const orderBy = getOrderBy(sortBy); //정렬 기준
 
@@ -138,12 +138,10 @@ async function getDetail(postId) {
         throw error;
     }
 
-    //await grantBadge(groupId);
-
     return await postRepository.getDetail(postId);
 }
 
-//id를 통해 그룹 찾고, 비밀번호 확인 -> 그룹 조회 권한 확인용
+//id를 통해 게시글 찾고, 비밀번호 확인 -> 게시글 조회 권한 확인용
 async function verifyPassword(postId, password) {
     const existedPost = await postRepository.findById(postId);
 
@@ -169,7 +167,7 @@ async function verifyPassword(postId, password) {
     return { message: '비밀번호가 확인되었습니다.' };
 }
 
-//그룹 공감 누르기
+//게시글 공감 누르기
 async function pushLike(postId) {
     const existedPost = await groupRepository.findById(postId);
 
@@ -191,7 +189,7 @@ async function pushLike(postId) {
         }
     }
 
-    return await postRepository.addLikeToPost(postId);
+    return await postRepository.addLike(postId);
 }
 
 function postLike(existedPost) {
@@ -204,7 +202,7 @@ function postLike(existedPost) {
     }
 }
 
-//그룹 공개 여부 확인용
+//게시글 공개 여부 확인용
 async function getPublicStatus(postId) {
     const existedPost = await postRepository.checkPostPublicStatus(postId);
 
@@ -218,71 +216,6 @@ async function getPublicStatus(postId) {
     return existedPost;
 }
 
-/*
-//배지 수여하기 - 배지 관련 작업 아직 X
-async function grantBadge(groupId) {
-    const existedGroup = await groupRepository.findById(groupId);
-
-    if (!existedGroup) {
-        const error = new Error('존재하지 않습니다.');
-        error.code = 404;
-        error.data = { id: groupId };
-        throw error;
-    }
-
-    //그룹 생성 후 1년 배지
-    const oneYearLater = checkYear(existedGroup);
-    if (oneYearLater) {
-        const name = "그룹 생성 후 1년 달성";
-        const existedBadge = await badgeRepository.findByName(name, groupId);
-
-        if (!existedBadge) {
-            await badgeRepository.save({ name: name, groupId: groupId });
-        }
-    }
-
-    //그룹 공감 1만 개 이상
-    const likeCount = checkLike(existedGroup);
-    if (likeCount) {
-        const name = "그룹 공감 1만개 이상";
-        const existedBadge = await badgeRepository.findByName(name, groupId);
-
-        if (!existedBadge) {
-            await badgeRepository.save({ name: name, groupId: groupId });
-        }
-    }
-    await groupRepository.updateBadgeCount(groupId);
-}
-
-
-function checkLike(group) {
-    const likeCount = group.likeCount;
-    if (likeCount >= 10000) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-function checkYear(group) {
-    const currentDate = new Date();
-    const createdAt = group.createdAt;
-
-    const oneYear = new Date(createdAt);
-
-    //생성 날짜로부터 1년 추가
-    oneYear.setFullYear(oneYear.getFullYear() + 1);
-
-    //만약 1년 추가한 후 현재 날짜가 생성 날짜보다 크다면 1년보다 크므로 true
-    if (currentDate >= oneYear) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-*/
 
 export default {
     createPost,

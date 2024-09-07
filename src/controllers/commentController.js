@@ -5,7 +5,8 @@ import commentService from '../services/commentService.js';
 const commentController = express.Router();
 
 
-commentController.put('/:id', async (req, res, next) => { //댓글 수정
+//댓글 수정
+commentController.put('/:id', async (req, res, next) => {
 	try {
 		const id = parseInt(req.params.id, 10);
 		const { nickname, password, content } = req.body;
@@ -38,7 +39,8 @@ commentController.put('/:id', async (req, res, next) => { //댓글 수정
 });
 
 
-commentController.delete('/:id', async (req, res, next) => {//댓글 삭제
+//댓글 삭제
+commentController.delete('/:id', async (req, res, next) => {
 	try {
 		const commentId = parseInt(req.params.id, 10);
 		const password = req.body.password;

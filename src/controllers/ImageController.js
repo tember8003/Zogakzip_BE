@@ -4,7 +4,10 @@ import path from 'path';
 import { func } from 'superstruct';
 
 const ImageController = express.Router();
+//이미지 URL 추출용 Controller
 
+
+//이미지 저장소 설정
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, 'uploads/');
@@ -18,6 +21,7 @@ const upload = multer({ storage: storage });
 
 const uploadMiddleware = upload.single('image');
 
+//이미지 업로드시 폴더 저장 후 URL 추출
 ImageController.post('/', uploadMiddleware, (req, res) => {
     try {
 

@@ -5,7 +5,8 @@ import commentService from '../services/commentService.js';
 const postController = express.Router();
 
 
-postController.put('/:id', async (req, res, next) => {//게시글 수정
+//게시글 수정
+postController.put('/:id', async (req, res, next) => {
 	try {
 		const postId = parseInt(req.params.id, 10);
 		const inputPassword = req.body.password;
@@ -27,10 +28,14 @@ postController.put('/:id', async (req, res, next) => {//게시글 수정
 	}
 });
 
-postController.delete('/:id', async (req, res, next) => { // 게시글 삭제
+// 게시글 삭제
+postController.delete('/:id', async (req, res, next) => {
 	try {
-		const postId = parseInt(req.params.id, 10); // 게시글 ID
-		const password = req.body.postPassword; // 요청 본문에서 비밀번호 추출
+		// 게시글 ID
+		const postId = parseInt(req.params.id, 10);
+
+		// 요청 본문에서 비밀번호 추출
+		const password = req.body.postPassword;
 
 		// 게시글 ID와 비밀번호가 제공되었는지 확인
 		if (!postId || !password) {
@@ -56,26 +61,17 @@ postController.delete('/:id', async (req, res, next) => { // 게시글 삭제
 	}
 });
 
-postController.get('/:id', async (req, res, next) => { // 게시글 상세 정보 조회
+// 게시글 상세 정보 조회
+postController.get('/:id', async (req, res, next) => {
 	try {
-		const postId = parseInt(req.params.id, 10); // 추억(게시글) ID
-
-		/*
-		// 추억의 상세 정보와 댓글 목록을 동시에 가져옴
-		const [post, comments] = await Promise.all([
-			postService.getDetail(postId), // 추억(게시글) 상세 정보 조회
-			commentService.getCommentsByPostId(postId) // 해당 추억의 댓글 목록 조회
-		]);
-		*/
+		// 추억(게시글) ID
+		const postId = parseInt(req.params.id, 10);
 
 		const post = await postService.getDetail(postId);
 
-		// 추억의 공감 수 업데이트 (공감 보내기 버튼과 관련)
-		//const updatedPost = await postService.updateLikeCount(postId);
 
 		return res.status(200).json({
 			post
-			//comments, // 댓글 목록 포함 -> 미포함
 		});
 	} catch (error) {
 		if (error.code === 404) {
@@ -111,7 +107,8 @@ postController.post('/:id/verify-password', async (req, res, next) => {
 	}
 })
 
-postController.post('/:id/like', async (req, res, next) => { // 게시글 공감하기
+// 게시글 공감하기
+postController.post('/:id/like', async (req, res, next) => {
 	try {
 		const postId = parseInt(req.params.id, 10);
 
@@ -132,7 +129,8 @@ postController.post('/:id/like', async (req, res, next) => { // 게시글 공감
 	}
 });
 
-postController.get('/:id/is-public', async (req, res, next) => { // 게시글 공개 여부 확인하기
+// 게시글 공개 여부 확인하기
+postController.get('/:id/is-public', async (req, res, next) => {
 	try {
 		const postId = parseInt(req.params.id, 10);
 
@@ -149,7 +147,8 @@ postController.get('/:id/is-public', async (req, res, next) => { // 게시글 �
 	}
 });
 
-postController.post('/:id/comments', async (req, res, next) => {//댓글 등록
+//댓글 등록
+postController.post('/:id/comments', async (req, res, next) => {
 	try {
 		const id = parseInt(req.params.id, 10);
 		const { nickname, password, content } = req.body;
@@ -176,7 +175,8 @@ postController.post('/:id/comments', async (req, res, next) => {//댓글 등록
 });
 
 
-postController.get('/:id/comments', async (req, res, next) => {  //댓글 상세 목록
+//댓글 상세 목록
+postController.get('/:id/comments', async (req, res, next) => {
 	try {
 		const postId = parseInt(req.params.id, 10);
 		const page = parseInt(req.query.page) || 1;
